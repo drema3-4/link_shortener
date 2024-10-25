@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkCutter.Identity", "Link
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D9B0334C-5E3C-4374-9CA5-3AF21D746794}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "webapp.client", "..\WebApp\webapp.client\webapp.client.esproj", "{74B3F100-A0FE-4FAA-9D0A-986B1010874D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,12 @@ Global
 		{D9B0334C-5E3C-4374-9CA5-3AF21D746794}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B0334C-5E3C-4374-9CA5-3AF21D746794}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B0334C-5E3C-4374-9CA5-3AF21D746794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +77,7 @@ Global
 		{D268A2F3-F76D-4A28-8C1F-B4E74C964486} = {D820E1F0-C381-485C-A6E9-BDC29480178F}
 		{5FB2A6A2-0358-4EE5-AFC7-32DB95C4E03A} = {B108FC0A-CCAF-43BB-ACCE-8A31E9BE8FA2}
 		{9A4BCD3D-F45C-453D-9F44-F0AF5978FF4B} = {C6F358D9-14B8-482A-956B-8C9F5F27DF8B}
+		{74B3F100-A0FE-4FAA-9D0A-986B1010874D} = {F6AD9E74-C20D-4D88-8D09-0AE09024FBBB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {538DB1BE-776C-4F7E-BF6B-12C6D55A0D2B}
