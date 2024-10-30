@@ -1,11 +1,31 @@
+version: '3.4'
+
 services:
-  db:
-    image: "mcr.microsoft.com/mssql/server:2022-latest"
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Limak123
   linkcutter.api:
-    image: ${DOCKER_REGISTRY-}linkcutterapi
+    image: ${DOCKER_REGISTRY-}linkcutter
     build:
       context: .
-      dockerfile: LinkCutter.API/Dockerfile
+      dockerfile: LinkCutter.Api/Dockerfile
+    ports:
+      - "7106:7106"
+    environment:
+      - ASPNETCORE_URLS=http://*:7106
+    depends_on: 
+        - mssql
+    networks:
+      - app-network
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: sql2
+    hostname: mssql
+    environment:
+      - SA_PASSWORD=P@ssword1
+      - ACCEPT_EULA=Y
+    restart: unless-stopped
+    ports:
+      - "1401:1433" 
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

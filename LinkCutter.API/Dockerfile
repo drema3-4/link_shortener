@@ -31,5 +31,4 @@ RUN dotnet publish "./LinkCutter.API.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=sqlserver /var/opt/mssql /var/opt/mssql
 ENTRYPOINT ["dotnet", "LinkCutter.API.dll"]
