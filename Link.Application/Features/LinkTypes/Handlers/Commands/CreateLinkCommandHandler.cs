@@ -14,14 +14,15 @@ using System.Threading.Tasks;
 namespace Link.Application.Features.LinkTypes.Handlers.Commands
 {
 
-    public record CreateLinkCommand(LinkDTO linkDTO):IRequest<BaseCommandResponse>;
+    public record CreateLinkCommand(LinkDTO linkDTO) : IRequest<BaseCommandResponse>;
 
     public class CreateLinkCommandHandler : IRequestHandler<CreateLinkCommand, BaseCommandResponse>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateLinkCommandHandler(IMapper mapper, IUnitOfWork unitOfWork) {
+        public CreateLinkCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
 
@@ -29,16 +30,27 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(CreateLinkCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new LinkDTOValidator();
-            var validationResult = await validator.ValidateAsync(request.linkDTO);
-            if (validationResult.IsValid == false)
-            {
-                response.Success = false;
-                response.Message = "Creation Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+            if (request.linkDTO.Name == null)
+            {   do
+                {
+                    string generatedLink = Guid.NewGuid().ToString();
+                    request.linkDTO.Name = generatedLink;
+                }
+            while (_unitOfWork.LinkRepository.GetByName(request.linkDTO.Name) != null);
+    
             }
             else
             {
+                var validator = new LinkDTOValidator();
+                var validationResult = await validator.ValidateAsync(request.linkDTO);
+                if (validationResult.IsValid == false)
+                {
+                    response.Success = false;
+                    response.Message = "Creation Failed";
+                    response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                    return response;
+                }
+            }
                 var leaveType = _mapper.Map<Link.Domain.Link>(request.linkDTO);
 
                 leaveType = await _unitOfWork.LinkRepository.Add(leaveType);
@@ -47,8 +59,8 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
                 response.Success = true;
                 response.Message = "Creation Successful";
                 response.Id = leaveType.Id;
-            }
-
+                
+            
             return response;
         }
     }

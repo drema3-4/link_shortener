@@ -25,9 +25,7 @@ namespace LinkCutter.Persistence
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedDate = DateTime.Now;
-                
-
-
+                    entry.Entity.CreatedBy = UserName;
                 }
             }
 

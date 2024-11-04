@@ -13,6 +13,6 @@ namespace Link.Domain.Common
 
         public DateTime CreatedDate { get; set; }
 
-        public long CreatedById { get; set; }
+        public string CreatedBy { get; set; }
     }
 }
