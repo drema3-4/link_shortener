@@ -1,8 +1,32 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import logo from '../assets/logo.png';
 
 export default class TakeGetLink extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+    
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+    
+    handleSubmit(event) {
+        console.log('here')
+    }
+    
+    // addLink(link) {
+    //     if (link) {
+    //         var xhr = new XMLHttpRequest();
+    //         xhr.open('post', url, true);
+    //         xhr.send(link);
+    //     }
+    // }
+
     render() {
         return (
             <Container
@@ -18,10 +42,14 @@ export default class TakeGetLink extends Component {
                 <h1
                     className="text-center"
                     style={{margin: '20px'}} > Укоротитель ссылок </h1>
-                <Form>
+                <Form onSubmit={this.ha}>
                     <Form.Group style={{margin: '20px'}}>
                         <Form.Label> Помогите клиентам быстро найти вашу страницу в интернете. Благодаря короткой ссылке клиентам не придётся видеть длинные url-адреса, занимающие много места.</Form.Label>
-                        <Form.Control type="link" placeholder="Введите ссылку, которую нужно сократить" />
+                        <Form.Control
+                            type="link"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            placeholder="Введите ссылку, которую нужно сократить" />
                     </Form.Group>
 
                     <Button
