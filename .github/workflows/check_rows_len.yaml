@@ -6,6 +6,4 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: python-version: '3.8'
-             architecture: 'x64'
       - run: python ../../check_rows_len.py
