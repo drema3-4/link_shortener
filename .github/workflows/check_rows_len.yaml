@@ -1,0 +1,10 @@
+name: Run check rows len
+
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - run: python check_rows_len.py
