@@ -65,7 +65,15 @@ def save_result(path: str, wrong_lines: dict) -> None:
 
     f.close()
 
+def print_result(wrong_lines: dict) -> None:
+    '''Данная функция выводит в консоль словарь
+    wrong_lines.'''
+
+    for elem in wrong_lines:
+        print(elem + ' : ' + wrong_lines[elem])
+
 # calculate
 work_dir = './'
 wrong_lines = check_files_and_dirs(work_dir, dict())
-save_result(work_dir + 'check_rows_len.txt', wrong_lines)
+print_result(wrong_lines)
+#save_result(work_dir + 'check_rows_len.txt', wrong_lines)
