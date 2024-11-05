@@ -6,4 +6,5 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: cd link_shortener
+      - run: ..
+      - run: ls
