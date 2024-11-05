@@ -6,5 +6,4 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: cd ..
-      - run: ls
+      - run: python ~./link_shortener/check_rows_len.py
