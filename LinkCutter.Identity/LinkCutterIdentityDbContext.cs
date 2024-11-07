@@ -5,12 +5,14 @@ using LinkCutter.Identity.Configurations;
 using System.Collections.Generic;
 using System.Text;
 using LinkCutter.Identity.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LinkCutter.Identity
 {
-    public class LinkCutterIdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class LinkCutterIdentityDbContext : IdentityDbContext
     {
-        public LinkCutterIdentityDbContext(DbContextOptions<LinkCutterIdentityDbContext> options)
+        public LinkCutterIdentityDbContext([NotNullAttribute] DbContextOptions options)
             : base(options)
         {
             Database.EnsureCreated();

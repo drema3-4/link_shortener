@@ -24,34 +24,31 @@ namespace LinkCutter.Identity
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            services.AddDbContext<LinkCutterIdentityDbContext>(options => 
-                options.UseSqlServer(configuration.GetConnectionString("LinkIdentityConnectionString")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<LinkCutterIdentityDbContext>().AddDefaultTokenProviders();
-
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IUserService, UserService>();
-
-            services.AddAuthentication(options =>
+            services.AddDbContext<LinkCutterIdentityDbContext>(options => {
+                options.UseSqlServer(configuration.GetConnectionString("LinkIdentityConnectionString"));
+                }
+                );
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                   .AddEntityFrameworkStores<LinkCutterIdentityDbContext>()
+                   .AddDefaultTokenProviders();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = false,
+                       ValidateAudience = false,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(
+                           Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"])),
+                       ClockSkew = TimeSpan.Zero
+                   };
+               });
+            services.AddAuthorization(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
-                        ValidIssuer = configuration["JwtSettings:Issuer"],
-                        ValidAudience = configuration["JwtSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
-                    };
-                });
+                options.AddPolicy("IsAdmin", policy => policy.RequireClaim("role", "admin"));
+            });
 
             return services;
         }

@@ -1,6 +1,7 @@
 using Link.Application;
 using LinkCutter.Persistence;
 using LinkCutter.Identity;
+using LinkCutter.Identity.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
-builder.Services.ConfigureIdentityServices(builder.Configuration);  
+builder.Services.ConfigureIdentityServices(builder.Configuration);
+
 
 builder.Services.AddCors(o =>
 {
@@ -31,9 +33,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-builder.Services.AddAuthentication();
-
-app.UseAuthentication();
 
 app.UseHttpsRedirection();
 

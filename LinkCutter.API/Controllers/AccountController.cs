@@ -1,31 +1,140 @@
-﻿using LinkCutter.Application.Contracts.Identity;
-using LinkCutter.Application.Models.Identity;
+﻿using AutoMapper;
+using Link.Application.DTO;
+using LinkCutter.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
-namespace LinkCutter.API.Controllers
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LinkCutterApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthenticationResponse
     {
-        private readonly IAuthService _authenticationService;
-        public AccountController(IAuthService authenticationService)
+        public string Token { get; set; }
+        public DateTime Expiration { get; set; }
+    }
+    public class UserCredentials
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+    }
+    [ApiController]
+    [Route("api/accounts")]
+    public class AccountsController : ControllerBase
+    {
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IConfiguration configuration;
+        private readonly LinkCutterIdentityDbContext context;
+        private readonly IMapper mapper;
+
+        public AccountsController(UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IConfiguration configuration,
+            LinkCutterIdentityDbContext context,
+            IMapper mapper)
         {
-            _authenticationService = authenticationService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.configuration = configuration;
+            this.context = context;
+            this.mapper = mapper;
+        }
+
+       
+
+        [HttpPost("makeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        public async Task<ActionResult> MakeAdmin([FromBody] string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            await userManager.AddClaimAsync(user, new Claim("role", "admin"));
+            return NoContent();
+        }
+
+        [HttpPost("removeAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdmin")]
+        public async Task<ActionResult> RemoveAdmin([FromBody] string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            await userManager.RemoveClaimAsync(user, new Claim("role", "admin"));
+            return NoContent();
+        }
+
+        [HttpPost("create")]
+        public async Task<ActionResult<AuthenticationResponse>> Create(
+            [FromBody] UserCredentials userCredentials)
+        {
+            var user = new IdentityUser { UserName = userCredentials.Email, Email = userCredentials.Email };
+            var result = await userManager.CreateAsync(user, userCredentials.Password);
+
+            if (result.Succeeded)
+            {
+                return await BuildToken(userCredentials);
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
+        public async Task<ActionResult<AuthenticationResponse>> Login(
+            [FromBody] UserCredentials userCredentials)
         {
-            return Ok(await _authenticationService.Login(request));
+            var result = await signInManager.PasswordSignInAsync(userCredentials.Email,
+                userCredentials.Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                return await BuildToken(userCredentials);
+            }
+            else
+            {
+                return BadRequest("Incorrect Login");
+            }
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        private async Task<AuthenticationResponse> BuildToken(UserCredentials userCredentials)
         {
-            return Ok(await _authenticationService.Register(request));
+            var claims = new List<Claim>()
+            {
+                new Claim("email", userCredentials.Email)
+            };
+
+            var user = await userManager.FindByNameAsync(userCredentials.Email);
+            var claimsDB = await userManager.GetClaimsAsync(user);
+
+            claims.AddRange(claimsDB);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var expiration = DateTime.UtcNow.AddYears(1);
+
+            var token = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
+                expires: expiration, signingCredentials: creds);
+
+            return new AuthenticationResponse()
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiration
+            };
         }
-
-
     }
 }

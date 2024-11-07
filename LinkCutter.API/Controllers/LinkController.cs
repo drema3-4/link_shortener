@@ -3,6 +3,7 @@ using Link.Application.Features.LinkTypes.Handlers.Commands;
 using Link.Application.Features.LinkTypes.Handlers.Queries;
 using LinkCutter.Application.Features.LinkTypes.Handlers.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,13 +28,14 @@ namespace LinkCutter.API.Controllers
             
             return Ok(allLinks);
         }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("CreateLink")]
         public async Task<ActionResult<IEnumerable<LinkDTO>>> CreateLink([FromBody]LinkDTO link)
         {
-            var allLinks = await _mediator.Send(new CreateLinkCommand(link));
-            return Ok(allLinks);
+            var newlink = await _mediator.Send(new CreateLinkCommand(link));
+            return Ok(newlink);
         }
-        [HttpGet]
+        [HttpGet("GetLink")]
         public async Task<LinkDTO> GetLink([FromQuery] string name)
         {
             var link = await _mediator.Send(new GetLinkByNameRequest(name));
