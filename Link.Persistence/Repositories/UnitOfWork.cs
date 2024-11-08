@@ -41,7 +41,8 @@ namespace LinkCutter.Persistence.Repositories
         {
             var username = _httpContextAccessor.HttpContext.User.Identity.Name ;
 
-            await _context.SaveChangesAsync(username);
+            if (username == null) username = "User";
+            await _context.SaveChangesAsync();
         }
     }
 }

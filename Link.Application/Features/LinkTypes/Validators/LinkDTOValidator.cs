@@ -7,7 +7,6 @@ namespace Link.Application.Features.LinkTypes.Validators
         public LinkDTOValidator()
         {
             RuleFor(link => link.Name)
-    .NotEmpty().WithMessage("{PropertyName} is required.")
     .Matches("^[a-z]+([A-Z][a-z]*)*$").WithMessage("{PropertyName} должно соответствовать шашлычной нотации");
 
             RuleFor(link => link.Url)

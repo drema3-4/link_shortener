@@ -8,6 +8,8 @@ public interface ILinkRepository : IGeneralRepository<Domain.Link>
 
     public Task<IEnumerable<Domain.Link>> GetAllLinks();
 
+    public Task<bool> DoesLinkExist(string name);
+
 
 }
 

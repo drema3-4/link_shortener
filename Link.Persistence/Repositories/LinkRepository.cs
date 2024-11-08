@@ -28,5 +28,14 @@ namespace LinkCutter.Persistence.Repositories
             var link = await _dbContext.Links.FirstOrDefaultAsync(i => i.Name == name);
             return link;
         }
+
+        public async Task<bool> DoesLinkExist(string name)
+        {
+
+            return _dbContext.Links.Any(link => link.Name.ToLower() == name.ToLower());
+        }
+
+
+
     }
 }

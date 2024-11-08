@@ -36,29 +36,37 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
                     string generatedLink = Guid.NewGuid().ToString();
                     request.linkDTO.Name = generatedLink;
                 }
-            while (_unitOfWork.LinkRepository.GetByName(request.linkDTO.Name) != null);
+            while (await _unitOfWork.LinkRepository.DoesLinkExist(request.linkDTO.Name));
     
             }
             else
             {
                 var validator = new LinkDTOValidator();
                 var validationResult = await validator.ValidateAsync(request.linkDTO);
+                var check = await _unitOfWork.LinkRepository.GetByName(request.linkDTO.Name);
+                if (check != null)
+                {
+                    response.Success = false;
+                    response.Message = "Такая ссылка уже существует";
+   
+                    return response;
+                }
                 if (validationResult.IsValid == false)
                 {
                     response.Success = false;
-                    response.Message = "Creation Failed";
+                    response.Message = "Создание ссылки неуспешно";
                     response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
                     return response;
                 }
             }
-                var leaveType = _mapper.Map<Link.Domain.Link>(request.linkDTO);
+                var linkType = _mapper.Map<Link.Domain.Link>(request.linkDTO);
 
-                leaveType = await _unitOfWork.LinkRepository.Add(leaveType);
+                linkType = await _unitOfWork.LinkRepository.Add(linkType);
                 await _unitOfWork.Save();
 
                 response.Success = true;
-                response.Message = "Creation Successful";
-                response.Id = leaveType.Id;
+                response.Message = linkType.Name;
+                response.Id = linkType.Id;
                 
             
             return response;
