@@ -12,18 +12,7 @@ import PrivateRoute from "./auth/PrivateRoute.js";
 function App() {
   return (
     <div className="App">
-      <Router>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Route>
-            {/* Other routes */}
-          </Routes>
-        </AuthProvider>
-      </Router>
+      <Header />
     </div>
   );
 }

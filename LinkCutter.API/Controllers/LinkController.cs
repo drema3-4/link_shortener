@@ -28,7 +28,7 @@ namespace LinkCutter.API.Controllers
             
             return Ok(allLinks);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("CreateLink")]
         public async Task<ActionResult<IEnumerable<LinkDTO>>> CreateLink([FromBody]LinkDTO link)
         {
