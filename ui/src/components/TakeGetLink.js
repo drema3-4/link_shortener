@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import logo from '../assets/logo.png';
+import axios from "axios";
 
 export default class TakeGetLink extends Component {
     constructor(props) {
@@ -16,23 +17,27 @@ export default class TakeGetLink extends Component {
     }
 
     handleSubmit(event) {
+      
         console.log(this.state.value);
         event.preventDefault();
+
         const response = fetch("http://localhost:7106/api/Link/CreateLink/", {
             method: "POST",
+              mode: "cors",
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body:  JSON.stringify({
-                "id": 0,
+   
                 "name": "string",
                 "url": "http://youtube.com",
-                "createdBy": "string"
+               
 
             }),
         }).then((response) => response.json());
         console.log(response)
+        
     }
 
     render() {
