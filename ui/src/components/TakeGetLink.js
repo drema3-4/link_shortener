@@ -29,9 +29,7 @@ export default class TakeGetLink extends Component {
                 'Content-Type': 'application/json',
             },
             body:  JSON.stringify({
-   
-                "name": "string",
-                "url": "http://youtube.com",
+                "url": this.state.value,
                
 
             }),
