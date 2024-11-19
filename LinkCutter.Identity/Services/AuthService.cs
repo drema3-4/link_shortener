@@ -13,6 +13,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using LinkCutter.Application.Responses;
+using Link.Application.Responses;
 
 namespace LinkCutter.Identity.Services
 {
@@ -37,14 +39,22 @@ namespace LinkCutter.Identity.Services
 
             if (user == null)
             {
-                throw new Exception($"User with {request.Email} not found.");
+                return new AuthResponse
+                {
+                    Success = false,
+                    Message = $"User with {request.Email} not found."
+                };
             }
 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
-                throw new Exception($"Credentials for '{request.Email} aren't valid'.");
+                return new AuthResponse
+                {
+                    Success = false,
+                    Message = $"Credentials for '{request.Email} aren't valid'."
+                };
             }
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
@@ -54,7 +64,8 @@ namespace LinkCutter.Identity.Services
                 Id = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.UserName,
+                Success = true
             };
 
             return response;
@@ -85,16 +96,26 @@ namespace LinkCutter.Identity.Services
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Employee");
-                    return new RegistrationResponse() { UserId = user.Id };
+                    return new RegistrationResponse() { Success = true, UserId = user.Id };
                 }
                 else
                 {
-                    throw new Exception($"{result.Errors}");
+                    return new RegistrationResponse()
+                    {
+                        Success = false,
+                        Message = "Error",
+                        Errors = result.Errors.Select(i => i.Description).ToList()
+                    };
                 }
             }
             else
             {
-                throw new Exception($"Email {request.Email } already exists.");
+                return new RegistrationResponse()
+                {
+                    Message = "Account with such email already exists",
+                    Success = false,
+                    
+                };
             }
         }
 

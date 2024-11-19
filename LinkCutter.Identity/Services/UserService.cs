@@ -23,7 +23,7 @@ namespace LinkCutter.Identity.Services
         }
 
         
-        public async Task<User> GetUser(int userId)
+        public async Task<User> GetUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             return new User
@@ -31,9 +31,33 @@ namespace LinkCutter.Identity.Services
                 Email = user.Email,
                 Id = user.Id,
                 UserName = user.UserName
+
             };
         }
 
+        public async Task MakeAdmin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.AddClaimAsync(user, new Claim("role", "admin"));
+        }
+        
+        public async Task RemoveAdmin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.RemoveClaimAsync(user, new Claim("role", "admin"));
+        }
+
+        public async Task<bool> IsAdmin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return false;
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.Contains("admin");
+        }
         public async Task<List<User>> GetUsers()
         {
             var employees = await _userManager.GetUsersInRoleAsync("User");

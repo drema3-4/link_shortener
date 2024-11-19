@@ -28,6 +28,19 @@ namespace LinkCutter.Persistence.Repositories
             var link = await _dbContext.Links.FirstOrDefaultAsync(i => i.Name == name);
             return link;
         }
+
+        public async Task<bool> DeleteLinkById(int linkId)
+        {
+            var link = await _dbContext.Links.FirstOrDefaultAsync(i => i.Id == linkId);
+            if (link != null)
+            {
+                link.IsDeleted = true;
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+
+        }
     
 
         public async Task<bool> DoesLinkExist(string name)

@@ -33,7 +33,7 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
             if (request.linkDTO.Name == null)
             {   do
                 {
-                    string generatedLink = Guid.NewGuid().ToString();
+                    string generatedLink = Guid.NewGuid().ToString().Substring(0, 4);
                     request.linkDTO.Name = generatedLink;
                 }
             while (await _unitOfWork.LinkRepository.DoesLinkExist(request.linkDTO.Name));

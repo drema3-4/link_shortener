@@ -23,6 +23,7 @@ namespace LinkCutter.API.Controllers
         {
             _mediator = mediator;
         }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("GetLinks")]
         public async Task<ActionResult<IEnumerable<LinkDTO>>> GetAllLinks()
         {
@@ -30,7 +31,7 @@ namespace LinkCutter.API.Controllers
             
             return Ok(allLinks);
         }
-        //    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
         [HttpPost("CreateLink")]
         public async Task<BaseCommandResponse> CreateLink([FromBody]LinkDTO link)
@@ -43,9 +44,14 @@ namespace LinkCutter.API.Controllers
         {
             var link = await _mediator.Send(new GetLinkByNameRequest(name));
             return link;
-            
         }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpDelete("DeleteLink")]
+        public async Task<BaseCommandResponse> DeleteLink([FromBody] LinkDTO link)
+        {
+            var newlink = await _mediator.Send(new DeleteLinkCommand(link));
+            return newlink;
+        }
 
 
         //[HttpGet]

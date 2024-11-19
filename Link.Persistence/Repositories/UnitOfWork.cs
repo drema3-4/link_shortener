@@ -39,10 +39,11 @@ namespace LinkCutter.Persistence.Repositories
 
         public async Task Save() 
         {
-            var username = _httpContextAccessor.HttpContext.User.Identity.Name ;
-
-            if (username == null) username = "Anonym";
-            await _context.SaveChangesAsync(username);
+            
+            var user = _httpContextAccessor.HttpContext.User;
+            if (user.Identity.IsAuthenticated) await _context.SaveChangesAsync(user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            else
+            await _context.SaveChangesAsync("Anonym");
         }
     }
 }

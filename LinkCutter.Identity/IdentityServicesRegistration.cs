@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Link.Application.Contracts.Persistence;
+using LinkCutter.Application.Contracts.Persistence;
 
 namespace LinkCutter.Identity
 {
@@ -28,7 +30,7 @@ namespace LinkCutter.Identity
                 options.UseSqlServer(configuration.GetConnectionString("LinkIdentityConnectionString"));
                 }
                 );
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                    .AddEntityFrameworkStores<LinkCutterIdentityDbContext>()
                    .AddDefaultTokenProviders();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,6 +51,9 @@ namespace LinkCutter.Identity
             {
                 options.AddPolicy("IsAdmin", policy => policy.RequireClaim("role", "admin"));
             });
+
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

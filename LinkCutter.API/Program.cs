@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
-//builder.Services.ConfigureIdentityServices(builder.Configuration);
+builder.Services.ConfigureIdentityServices(builder.Configuration);
 
 builder.Services.AddControllers(
     options => { options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true; 

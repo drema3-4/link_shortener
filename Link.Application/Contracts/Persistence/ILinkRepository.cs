@@ -10,6 +10,10 @@ public interface ILinkRepository : IGeneralRepository<Domain.Link>
 
     public Task<bool> DoesLinkExist(string name);
 
+    public Task<bool> DeleteLinkById(int id);
+
+    
+
 
 }
 

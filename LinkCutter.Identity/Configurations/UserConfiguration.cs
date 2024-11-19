@@ -30,7 +30,6 @@ namespace LinkCutter.Identity.Configurations
                      Id = "9e224968-33e4-4652-b7b7-8574d048cdb9",
                      Email = "user@localhost.com",
                      NormalizedEmail = "USER@LOCALHOST.COM",
-                  
                      UserName = "user@localhost.com",
                      NormalizedUserName = "USER@LOCALHOST.COM",
                      PasswordHash = hasher.HashPassword(null, "P@ssword1"),

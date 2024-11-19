@@ -1,6 +1,8 @@
-﻿namespace LinkCutter.Application.Models.Identity
+﻿using Link.Application.Responses;
+
+namespace LinkCutter.Application.Models.Identity
 {
-    public class AuthResponse
+    public class AuthResponse:BaseCommandResponse
     {
         public string Id { get; set; }
         public string UserName { get; set; }

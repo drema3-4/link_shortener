@@ -10,6 +10,13 @@ namespace LinkCutter.Application.Contracts.Identity
     public interface IUserService
     {
         Task<List<User>> GetUsers();
-        Task<User> GetUser(int userId);
+        Task<User> GetUser(string userId);
+
+
+        Task MakeAdmin(string userId);
+
+        Task RemoveAdmin(string userId);
+
+        Task<bool> IsAdmin(string userId);
     }
 }
