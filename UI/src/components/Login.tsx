@@ -1,6 +1,6 @@
 import { Form, FormGroup, FormControl, Button } from "react-bootstrap"
 
-export function LoginFormComponent() {
+export function LoginComponent() {
 
     return (
         <Form>

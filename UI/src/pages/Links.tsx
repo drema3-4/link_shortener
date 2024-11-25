@@ -1,11 +1,16 @@
-import { Container } from "react-bootstrap";
+import { ErrorMessageComponent } from "../components/ErrorMessage";
 import { LinkComponent } from "../components/Link";
+import { LoaderComponent } from "../components/Loader";
+import { useLinks } from "../hooks/links";
 
 export function LinksPage() {
+    const {links, loading, error} = useLinks()
 
     return (
-        <Container>
-            <LinkComponent />
-        </Container>
+        <>
+            { loading && <LoaderComponent /> }
+            { error && <ErrorMessageComponent error={error} /> }
+            { links.map(link => <LinkComponent link={link} key={link.name} />) }
+        </>
     )
 }

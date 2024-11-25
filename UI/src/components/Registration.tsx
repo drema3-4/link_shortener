@@ -1,6 +1,6 @@
 import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
 
-export function RegistrationFormComponent() {
+export function RegistrationComponent() {
 
     return (
         <Form>

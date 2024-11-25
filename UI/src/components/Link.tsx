@@ -1,6 +1,11 @@
 import { Form, InputGroup, Button } from "react-bootstrap";
+import { ILink } from "../models";
 
-export function LinkComponent() {
+interface LinkProps {
+    link: ILink
+}
+
+export function LinkComponent(props: LinkProps) {
 
     return (
         <Form>
@@ -8,7 +13,7 @@ export function LinkComponent() {
             <InputGroup>
                 <Form.Control
                     type="text"
-                    value={"https://google.com"}
+                    value={ props.link.originLink }
                     disabled
                     readOnly
                 />
@@ -22,7 +27,7 @@ export function LinkComponent() {
             <InputGroup>
                 <Form.Control
                     type="text"
-                    value={"https://123e.com"}
+                    value={ props.link.shortLink }
                     disabled
                     readOnly
                 />

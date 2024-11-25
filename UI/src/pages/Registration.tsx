@@ -1,8 +1,8 @@
-import { RegistrationFormComponent } from "../components/RegistrationForm"
+import { RegistrationComponent } from "../components/Registration"
 
 export function RegistrationPage() {
 
     return (
-        <RegistrationFormComponent />
+        <RegistrationComponent />
     )
 }

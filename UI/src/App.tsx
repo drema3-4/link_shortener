@@ -6,5 +6,5 @@ import { LoginPage } from './pages/Login'
 import { RegistrationPage } from './pages/Registration'
 
 createRoot(document.getElementById('root')!).render(
-  <RegistrationPage />
+  <HomePage />
 )
