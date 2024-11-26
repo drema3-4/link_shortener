@@ -95,7 +95,7 @@ namespace LinkCutter.Identity.Services
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "Employee");
+                    await _userManager.AddToRoleAsync(user, "User");
                     return new RegistrationResponse() { Success = true, UserId = user.Id };
                 }
                 else
