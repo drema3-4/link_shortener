@@ -12,7 +12,7 @@ export function useLinks() {
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get<ILink[]>("https://myurl")
+            const response = await axios.get<ILink[]>("http://localhost:7106/api/Link/GetLinks")
             setLinks(response.data)
             setLoading(false)
         } catch (e: unknown) {

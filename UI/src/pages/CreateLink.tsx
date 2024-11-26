@@ -1,12 +1,12 @@
 import { NavigateComponent } from "../components/Navigate"
-import { FindLinkComponent } from "../components/FindLink"
+import { CreateLinkComponent } from "../components/CreateLink"
 
-export function HomePage() {
+export function CreateLinkPage() {
 
     return (
         <>
             <NavigateComponent />
-            <FindLinkComponent />
+            <CreateLinkComponent />
         </>
     )
 }

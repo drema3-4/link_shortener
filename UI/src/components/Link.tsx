@@ -1,4 +1,4 @@
-import { Form, InputGroup, Button } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
 import { ILink } from "../models";
 
 interface LinkProps {
@@ -7,41 +7,22 @@ interface LinkProps {
 
 export function LinkComponent(props: LinkProps) {
 
+    const buttonClickHandler = (name: string) => (event: any) => {
+        console.log(name)
+    }
+
     return (
-        <Form>
-            <Form.Label> The original version of the link </Form.Label>
-            <InputGroup>
-                <Form.Control
-                    type="text"
-                    value={ props.link.originLink }
-                    disabled
-                    readOnly
-                />
+        <tr>
+            <td>props.link.name</td>
+            <td>props.link.url</td>
+            <td>
                 <Button
-                    variant="primary"
+                    variant="danger"
+                    onClick={buttonClickHandler(props.link.name)}
                 >
-                    Copy
+                    Delete
                 </Button>
-            </InputGroup>
-            <Form.Label> The short version of the link </Form.Label>
-            <InputGroup>
-                <Form.Control
-                    type="text"
-                    value={ props.link.shortLink }
-                    disabled
-                    readOnly
-                />
-                <Button
-                    variant="primary"
-                >
-                    Copy
-                </Button>
-            </InputGroup>
-            <Button
-                variant="danger"
-            >
-                Remove
-            </Button>
-        </Form>
+            </td>
+        </tr>
     )
 }
