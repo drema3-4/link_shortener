@@ -50,8 +50,8 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
             }
             else
             {
-                var check = await _unitOfWork.LinkRepository.GetByName(request.linkDTO.Name);
-                if (check != null)
+                var check = await _unitOfWork.LinkRepository.DoesLinkExist(request.linkDTO.Name);
+                if (check == true)
                 {
                     response.Success = false;
                     response.Message = "Такая ссылка уже существует";

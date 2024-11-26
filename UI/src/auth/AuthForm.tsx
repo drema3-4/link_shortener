@@ -1,13 +1,15 @@
+import { Button, Form } from 'react-bootstrap';
 import {userCredentials} from './auth.models'
-import {Form, Formik, FormikHelpers} from 'formik';
 import * as Yup from 'yup';
-import TextField from '../forms/TextField';
-import Button from '../utils/Button';
+
 import { Link } from 'react-router-dom';
+import {  Formik, FormikHelpers } from 'formik';
+import TextField from '../forms/TextField';
 
 export default function AuthForm(props: authFormProps){
     return (
         <Formik
+        
             initialValues={props.model}
             onSubmit={props.onSubmit}
             validationSchema={Yup.object({

@@ -1,3 +1,6 @@
+const baseURL = 'http://localhost:7106/'
 export const ApiEndpoints = {
-    account: 'api/accounts'
+    signUp:  baseURL + 'api/accounts/signUp',
+    login: baseURL + 'api/accounts/login',
+ 
 }

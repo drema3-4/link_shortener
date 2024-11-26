@@ -12,7 +12,7 @@ export function LinkComponent(props: LinkProps) {
         try {
             const response = await axios.get<ILink>('http://localhost:7106/api/Link/GetLink')
 
-            if (response.status === 200 && response.data) {
+            if (response.data.Success && response.data) {
                 await axios.delete('http://localhost:7106/api/Link/DeleteLink', response.data)
             }
 
@@ -24,8 +24,8 @@ export function LinkComponent(props: LinkProps) {
 
     return (
         <tr>
-            <td>props.link.name</td>
-            <td>props.link.url</td>
+            <td>{props.link.name}</td>
+            <td>{props.link.url}</td>
             <td>
                 <Button
                     variant="danger"

@@ -18,7 +18,7 @@ export function useCreateLink() {
         try {
             const response = await axios.post<ICreateLinkResponse>('http://localhost:7106/api/Link/CreateLink', request)
 
-            if (response.status === 200 && !response.data.errors) {
+            if (response.data.success && !response.data.errors) {
                 setShortLink('http://localhost:5173/' + response.data.message)
             } else {
                 setError(true)

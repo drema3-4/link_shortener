@@ -46,7 +46,7 @@ namespace LinkCutter.Persistence.Repositories
         public async Task<bool> DoesLinkExist(string name)
         {
 
-            return _dbContext.Links.Any(link => link.Name.ToLower() == name.ToLower());
+            return _dbContext.Links.Any(link => link.Name.ToLower() == name.ToLower() && !link.IsDeleted);
         }
 
 

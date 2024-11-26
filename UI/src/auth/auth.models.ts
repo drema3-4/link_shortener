@@ -10,7 +10,10 @@ export interface userCredentials {
 
 export interface authenticationResponse{
     token: string;
-    expiration: Date;
+    expirationKey: string;
+    success:boolean;
+    errors: string[]
+    message:string;
 }
 
 export interface userDTO {

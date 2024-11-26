@@ -12,7 +12,7 @@ export interface ICreateLinkRequest {
 
 export interface ICreateLinkResponse {
     id: number
-    success: true
+    success: boolean
     message: string
     errors: string[]
 }

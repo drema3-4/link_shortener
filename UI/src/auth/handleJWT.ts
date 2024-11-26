@@ -5,7 +5,7 @@ const expirationKey = 'token-expiration'
 
 export function saveToken(authData: authenticationResponse){
     localStorage.setItem(tokenKey, authData.token);
-    localStorage.setItem(expirationKey, authData.expiration.toString());
+    localStorage.setItem(expirationKey, authData.expirationKey);
 }
 
 export function getClaims(): claim[]{
@@ -28,7 +28,7 @@ export function getClaims(): claim[]{
     for (const property in dataToken){
         response.push({name: property, value: dataToken[property]});
     }
-
+    console.log(response)
     return response;
 }
 

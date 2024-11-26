@@ -5,7 +5,6 @@ export function CreateLinkPage() {
 
     return (
         <>
-            <NavigateComponent />
             <CreateLinkComponent />
         </>
     )

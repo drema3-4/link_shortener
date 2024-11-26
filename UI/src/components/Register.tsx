@@ -34,7 +34,7 @@ export default function LoginComponent(){
     async function login(credentials: userCredentials){
             setErrors([]);
             const response = await axios
-            .post<authenticationResponse>(`${ApiEndpoints.login}`, credentials)
+            .post<authenticationResponse>(`${ApiEndpoints.signUp}`, credentials)
             if(response.data.success){
             saveToken(response.data);
             
@@ -49,7 +49,7 @@ export default function LoginComponent(){
 
     return (
         <>
-            <h3>Login</h3>
+            <h3>Register</h3>
             <DisplayErrors errors={errors} />
             <Formik
               initialValues={initialValues}

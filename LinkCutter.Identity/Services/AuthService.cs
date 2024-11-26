@@ -64,6 +64,7 @@ namespace LinkCutter.Identity.Services
                 Id = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = user.Email,
+                ExpirationKey = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 UserName = user.UserName,
                 Success = true
             };
@@ -100,8 +101,9 @@ namespace LinkCutter.Identity.Services
 
                 if (result.Succeeded)
                 {
+                    JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
                     await _userManager.AddToRoleAsync(user, "User");
-                    return new RegistrationResponse() { Success = true, UserId = user.Id };
+                    return new RegistrationResponse() { Success = true, UserId = user.Id, ExpirationKey = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes), Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken) };
                 }
                 else
                 {

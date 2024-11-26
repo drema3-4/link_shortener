@@ -92,7 +92,7 @@ namespace LinkCutterApi.Controllers
             }
             else
             {
-                return (BadRequest(res));
+                return (res);
             }
 
 

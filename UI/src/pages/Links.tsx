@@ -10,7 +10,6 @@ export function LinksPage() {
 
     return (
         <>
-            <NavigateComponent />
             { loading && <LoaderComponent /> }
             { error && <ErrorMessageComponent error={error} /> }
             <Table bordered>

@@ -1,13 +1,18 @@
-﻿using Link.Application.DTO;
+﻿using AutoMapper;
+using Link.Application.DTO;
 using Link.Application.Features.LinkTypes.Handlers.Commands;
 using Link.Application.Features.LinkTypes.Handlers.Queries;
 using Link.Application.Responses;
+using LinkCutter.Application.DTO.Common;
 using LinkCutter.Application.Features.LinkTypes.Handlers.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using LinkCutter.Application.Extensions;
+using Microsoft.EntityFrameworkCore;
+using LinkCutter.Application.Responses;
 
 
 
@@ -18,17 +23,24 @@ namespace LinkCutter.API.Controllers
     public class LinkController : Controller
     {
         private IMediator _mediator;
+        private IMapper _mapper;
 
-        public LinkController(IMediator mediator)
+        public LinkController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
+
         }
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("GetLinks")]
-        public async Task<ActionResult<IEnumerable<LinkDTO>>> GetAllLinks()
+        public async Task<ActionResult<IEnumerable<LinkDTO>>> GetAllLinks(/*[FromQuery] PaginationDTO paginationDTO*/)
         {
             var allLinks = await _mediator.Send(new GetLinkTypeListRequest());
-            
+            //var queryable = allLinks.AsQueryable();
+            //await HttpContext.InsertParametersPaginationInHeader(queryable);
+            //var links = await queryable.OrderBy(x => x.Name).Paginate(paginationDTO).ToListAsync();
+            //var linksDTO = _mapper.Map<List<LinkDTO>>(links);
+            //return Ok(linksDTO);
             return Ok(allLinks);
         }
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -42,6 +54,7 @@ namespace LinkCutter.API.Controllers
         [HttpGet("GetLink")]
         public async Task<LinkDTO> GetLink([FromQuery] string name)
         {
+
             var link = await _mediator.Send(new GetLinkByNameRequest(name));
             return link;
         }

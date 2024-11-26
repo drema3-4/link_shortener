@@ -7,13 +7,16 @@ import AuthenticationContext from './auth/AuthenticationContext'
 import { useState, useEffect } from 'react'
 import { claim } from './auth/auth.models'
 import { getClaims } from './auth/handleJWT'
+import configureInterceptor from './util/httpInterceptors'
+import routes from './routes'
+import { NavigateComponent } from './components/Navigate'
 
 createRoot(document.getElementById('root')!).render(
   <App/>
 )
 
 function App(){
-  configureValidations();
+  configureInterceptor();
   const [claims, setClaims] = useState<claim[]>([]);
 
   useEffect(() => {
@@ -27,16 +30,15 @@ function App(){
   return(
     <BrowserRouter>
   <AuthenticationContext.Provider value={{ claims, update: setClaims }}>
+    <NavigateComponent></NavigateComponent>
     <Routes>
-      <Route path='/' element={ <CreateLinkPage /> } />
+      {routes.map( i => <Route path={i.path} element = {<i.element/>} />)}
+      {/* <Route path='/' element={ <CreateLinkPage /> } />
       <Route path='/createLink' element={ <CreateLinkPage /> } />
-      <Route path='/links' element={ <LinksPage /> } />
+      <Route path='/links' element={ <LinksPage /> } /> */}
     </Routes>
     </AuthenticationContext.Provider>
   </BrowserRouter>
   )
 }
 
-function configureValidations() {
-  throw new Error('Function not implemented.')
-}

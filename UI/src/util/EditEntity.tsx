@@ -1,6 +1,8 @@
 import { ReactElement, useEffect, useState } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosResponse } from 'axios';
+import DisplayErrors from "./DisplayErrors";
+import Loading from "./Loading";
 
 
 export default function EditEntity<TCreation, TRead>
