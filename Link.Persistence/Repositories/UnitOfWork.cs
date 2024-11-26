@@ -41,7 +41,7 @@ namespace LinkCutter.Persistence.Repositories
         {
             
             var user = _httpContextAccessor.HttpContext.User;
-            if (user.Identity.IsAuthenticated) await _context.SaveChangesAsync(user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            if (user.Identity.IsAuthenticated) await _context.SaveChangesAsync(user.Claims.FirstOrDefault(x => x.Type == CustomClaimTypes.Uid).Value);
             else
             await _context.SaveChangesAsync("Anonym");
         }

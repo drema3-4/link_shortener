@@ -30,10 +30,19 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
         public async Task<BaseCommandResponse> Handle(CreateLinkCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
+            var validator = new LinkDTOValidator();
+            var validationResult = await validator.ValidateAsync(request.linkDTO);
+            if (validationResult.IsValid == false)
+            {
+                response.Success = false;
+                response.Message = "Валидация неуспешна";
+                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return response;
+            }
             if (request.linkDTO.Name == null)
             {   do
                 {
-                    string generatedLink = Guid.NewGuid().ToString().Substring(0, 4);
+                    string generatedLink = Guid.NewGuid().ToString().Substring(0, 8);
                     request.linkDTO.Name = generatedLink;
                 }
             while (await _unitOfWork.LinkRepository.DoesLinkExist(request.linkDTO.Name));
@@ -41,8 +50,6 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
             }
             else
             {
-                var validator = new LinkDTOValidator();
-                var validationResult = await validator.ValidateAsync(request.linkDTO);
                 var check = await _unitOfWork.LinkRepository.GetByName(request.linkDTO.Name);
                 if (check != null)
                 {
@@ -51,13 +58,7 @@ namespace Link.Application.Features.LinkTypes.Handlers.Commands
    
                     return response;
                 }
-                if (validationResult.IsValid == false)
-                {
-                    response.Success = false;
-                    response.Message = "Создание ссылки неуспешно";
-                    response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-                    return response;
-                }
+                
             }
                 var linkType = _mapper.Map<Link.Domain.Link>(request.linkDTO);
 

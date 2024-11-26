@@ -77,7 +77,12 @@ namespace LinkCutter.Identity.Services
 
             if (existingUser != null)
             {
-                throw new Exception($"UserName '{request.UserName}' already exists.");
+                return new RegistrationResponse()
+                {
+                    Message = "Account with such username is already exists",
+                    Success = false,
+
+                };
             }
 
             var user = new ApplicationUser

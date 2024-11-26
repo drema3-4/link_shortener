@@ -35,7 +35,6 @@ namespace Link.Application.Features.LinkTypes.Handlers.Queries
         public async Task<IEnumerable<LinkDTO>> Handle(GetLinkTypeListRequest request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == CustomClaimTypes.Uid);
-            var user = await _userService.GetUser(userId.Value);
             var isAdmin = await _userService.IsAdmin(userId.Value);
             IEnumerable<Link.Domain.Link> links;
             if (isAdmin)
@@ -44,7 +43,7 @@ namespace Link.Application.Features.LinkTypes.Handlers.Queries
             }
             else
             {
-                links = _linkRepository.GetAllLinks().Result.Where(i => i.CreatedBy == user.UserName && !i.IsDeleted);
+                links = _linkRepository.GetAllLinks().Result.Where(i => i.CreatedBy == userId.Value && !i.IsDeleted);
             }
             var linksDto = _mapper.Map<List<LinkDTO>>(links);
             return linksDto; 

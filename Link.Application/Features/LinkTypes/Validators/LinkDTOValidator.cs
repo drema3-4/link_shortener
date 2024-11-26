@@ -11,7 +11,7 @@ namespace Link.Application.Features.LinkTypes.Validators
 
             RuleFor(link => link.Url)
       .NotEmpty().WithMessage("{PropertyName} is required.")
-      .Matches(@"^(https?|ftp)://[^\s/$.?#].[^\s]*$").WithMessage("{PropertyName} должно соответствовать формату ссылки");
+      .Matches(@"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)").WithMessage("{PropertyName} должно соответствовать формату ссылки");
         }
     }
 }
