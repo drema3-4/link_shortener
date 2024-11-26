@@ -1,26 +1,34 @@
 import { Form, FormGroup, FormControl, Button, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import { ChangeEvent } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ICreateLinkRequest, ICreateLinkResponse } from "../models";
+import { ErrorMessageComponent } from "./ErrorMessage";
 
 export function CreateLinkComponent() {
     const [link, setLink] = useState('')
     const [name, setName] = useState('')
     const [shortLink, setShortLink] = useState('')
     const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
 
         const request: ICreateLinkRequest = { name: name, url: link}
 
-        const response = await axios.get<ICreateLinkResponse>('http://localhost:7106/api/Link/CreateLink', request)
+        try {
+            const response = await axios.post<ICreateLinkResponse>('http://localhost:7106/api/Link/CreateLink', request)
 
-        if (response.status === 200 && !response.data.errors) {
-            setShortLink('http://localhost:5173/' + response.data.message)
-        } else {
+            if (response.status === 200 && !response.data.errors) {
+                setShortLink('http://localhost:5173/' + response.data.message)
+            } else {
+                setError(true)
+            }
+        } catch (e: unknown) {
+            const error = e as AxiosError
             setError(true)
+            setErrorMessage(error.message)
         }
     }
 
@@ -38,8 +46,10 @@ export function CreateLinkComponent() {
         <>
             { !shortLink && 
                 <Form onSubmit={submitHandler}>
-                    { error && 
+                    { error && !errorMessage &&
                     <Form.Text> Something wrong! Try again! </Form.Text> }
+                    { error && errorMessage &&
+                    <ErrorMessageComponent error={errorMessage} /> }
                     <FormGroup>
                         <Form.Label>Enter the link you want to shorten</Form.Label>
                         <FormControl

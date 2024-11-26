@@ -1,5 +1,6 @@
 import { Button, Form, Table } from "react-bootstrap";
 import { ILink } from "../models";
+import axios, { AxiosError } from "axios";
 
 interface LinkProps {
     link: ILink
@@ -7,8 +8,18 @@ interface LinkProps {
 
 export function LinkComponent(props: LinkProps) {
 
-    const buttonClickHandler = (name: string) => (event: any) => {
-        console.log(name)
+    const buttonClickHandler = (name: string) => async (event: any) => {
+        try {
+            const response = await axios.get<ILink>('http://localhost:7106/api/Link/GetLink')
+
+            if (response.status === 200 && response.data) {
+                await axios.delete('http://localhost:7106/api/Link/DeleteLink', response.data)
+            }
+
+        } catch (e: unknown) {
+            const error = e as AxiosError
+            console.log(error.message)
+        }
     }
 
     return (
