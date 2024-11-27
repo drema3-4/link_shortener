@@ -74,7 +74,7 @@ namespace LinkCutter.Identity.Services
 
         public async Task<RegistrationResponse> Register(RegistrationRequest request)
         {
-            var existingUser = await _userManager.FindByNameAsync(request.UserName);
+            var existingUser = await _userManager.FindByEmailAsync(request.Email);
 
             if (existingUser != null)
             {
@@ -89,7 +89,7 @@ namespace LinkCutter.Identity.Services
             var user = new ApplicationUser
             {
                 Email = request.Email,
-                UserName = request.UserName,
+                UserName = request.Email,
                 EmailConfirmed = true
             };
 
