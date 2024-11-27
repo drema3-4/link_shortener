@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ICreateLinkRequest, ICreateLinkResponse } from "../models"
 import axios, { AxiosError } from "axios"
 import { ChangeEvent } from "react"
+import { ApiEndpoints } from "../util/endpoints"
 
 export function useCreateLink() {
     const [link, setLink] = useState('')
@@ -16,10 +17,10 @@ export function useCreateLink() {
         const request: ICreateLinkRequest = { name: name, url: link}
 
         try {
-            const response = await axios.post<ICreateLinkResponse>('http://localhost:7106/api/Link/CreateLink', request)
+            const response = await axios.post<ICreateLinkResponse>(`${ApiEndpoints.createLink}`, request)
 
             if (response.data.success && !response.data.errors) {
-                setShortLink('http://localhost:5173/' + response.data.message)
+                setShortLink(`${ApiEndpoints.frontHost}` + response.data.message)
             } else {
                 setError(true)
             }
@@ -40,5 +41,12 @@ export function useCreateLink() {
         setError(false)
     }
 
-    return { link, name, shortLink, error, errorMessage, submitHandler, changeLinkHandler, changeNameHandler }
+    const copyShortLink = async (event: any) => {
+        try {
+            await navigator.clipboard.writeText(shortLink);
+          } catch (err) {
+          }
+    }
+
+    return { link, name, shortLink, error, errorMessage, submitHandler, changeLinkHandler, changeNameHandler, copyShortLink }
 }

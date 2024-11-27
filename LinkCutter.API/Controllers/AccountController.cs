@@ -27,7 +27,7 @@ namespace LinkCutterApi.Controllers
 {
     [ApiController]
     [Route("api/accounts")]
-    public class AccountsController : ControllerBase
+    public class AccountsController : Controller
     {
         private readonly IAuthService authService;
         private readonly IUserService userService;

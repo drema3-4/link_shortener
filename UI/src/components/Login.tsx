@@ -2,6 +2,7 @@ import axios from 'axios';
 import { authenticationResponse, userCredentials } from '../auth/auth.models';
 import AuthForm from '../auth/AuthForm';
 import { useContext, useState } from 'react';
+import { AccordionCollapse, Container, Row, Col } from 'react-bootstrap';
 
 import { getClaims, saveToken } from '../auth/handleJWT';
 import AuthenticationContext from '../auth/AuthenticationContext';
@@ -41,64 +42,68 @@ export default function LoginComponent() {
             saveToken(response.data);
 
             update(getClaims());
-            history('/');
+            history('/createLink');
         } else {
             setMessage(response.data.message)
         }
     }
 
     return (
-        <>
-            <h3>Login</h3>
-            <DisplayErrors errors={errors} />
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={login}
-            >
-                <Form className='login-password'>
-                    <div className="form-group">
-                        <label className='form-group-item' htmlFor="email">Email:</label>
-                        <Field name="email" type="text" className="form-control" />
-                        <div className='alert-container'>
-                            <ErrorMessage
-                                name="email"
-                                component="div"
-                                className="alert alert-danger errorMessage"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className='form-group-item' htmlFor="password">Password: </label>
-                        <Field name="password" type="password" className="form-control" />
-                        <div className='alert-container'>
-                            <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="alert alert-danger errorMessage"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group login-button">
-                        <div>
-                            <button type="submit" className="btn btn-primary btn-block" >
-                                <span>Login</span>
-                            </button>
-                            <a href="/signUp"> Registration </a>
-                        </div>
-                    </div>
-
-                    {message && (
+        <Row className='justify-content-center' style={{marginTop: '6em'}}>
+            <Col xs={3} className='justify-content-center'>
+                <h3>Login</h3>
+                <DisplayErrors errors={errors} />
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={login}
+                >
+                    <Form className='login-password'>
                         <div className="form-group">
-                            <div className="alert alert-danger" role="alert">
-                                {message}
+                            <label className='form-group-item' htmlFor="email">Email:</label>
+                            <Field name="email" type="text" className="form-control" />
+                            <div className='alert-container'>
+                                <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="alert alert-danger errorMessage"
+                                />
                             </div>
                         </div>
-                    )}
-                </Form>
-            </Formik>
-        </>
+
+                        <div className="form-group" style={{marginTop: '1em'}}>
+                            <label className='form-group-item' htmlFor="password">Password: </label>
+                            <Field name="password" type="password" className="form-control" />
+                            <div className='alert-container'>
+                                <ErrorMessage
+                                    name="password"
+                                    component="div"
+                                    className="alert alert-danger errorMessage"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="form-group login-button" style={{marginTop: '1em'}}>
+                            <div>
+                                <button type="submit" className="btn btn-primary btn-block" >
+                                    <span>Login</span>
+                                </button>
+                            </div>
+                            <div style={{marginTop: '1em', textAlign: 'center'}}>
+                                <a href="/signUp"> Registration </a>
+                            </div>
+                        </div>
+
+                        {message && (
+                            <div className="form-group">
+                                <div className="alert alert-danger" role="alert">
+                                    {message}
+                                </div>
+                            </div>
+                        )}
+                    </Form>
+                </Formik>
+            </Col>
+        </Row>
     )
 }

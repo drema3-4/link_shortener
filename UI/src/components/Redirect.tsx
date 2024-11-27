@@ -1,10 +1,10 @@
 import { Form } from "react-bootstrap"
 import { useRedirect } from "../hooks/redirect"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 export function RedirectComponent() {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const redirect = useRedirect({name: searchParams.get("name")})
+    const params = useParams()
+    const redirect = useRedirect({name: params.name})
 
     if (redirect.originLink) {
         document.location.href = redirect.originLink

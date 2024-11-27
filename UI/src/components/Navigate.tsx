@@ -1,48 +1,48 @@
-import { Navbar, Container, Nav, NavDropdown, NavLink, Button } from "react-bootstrap"
+import { Navbar, Container, Nav, NavDropdown, NavLink, Button, Form } from "react-bootstrap"
 import logo from '../assets/logo.png'
 import Authorized from "../auth/Authorized"
 import AuthenticationContext from "../auth/AuthenticationContext";
 import { logout } from "../auth/handleJWT";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function NavigateComponent() {
+    const history = useNavigate();
     const {update, claims} = useContext(AuthenticationContext);
     function getUserEmail(): string {
         return claims.filter(x => x.name === "email")[0]?.value;
     }
     return (
-        <Navbar bg="light" data-bs-theme="light">
+        <Navbar className="bg-body-tertiary justify-content-between" bg="light" data-bs-theme="light">
             <Navbar.Brand href="/">
                 <img style={ {width: '2em'} } src={logo} />
             </Navbar.Brand>
             <Nav className="me-auto">
                 <Authorized authorized = {
                     <>
-                        <span className="nav-link">
-                            Hello, {getUserEmail()}
-                            <Button
-                                onClick={() => {
-                                    logout();
-                                    update([]);
-                                }}
-                                className="nav-link btn btn-link"
-                            >
-                                Log out
-                            </Button>
-                        </span>
-
                         <Nav.Link href="/createLink">Create link</Nav.Link>
                         <Nav.Link href="/links">Links</Nav.Link>
-                    </> }
-                    // notAuthorized = {
-                    //     <>
-                    //         <Nav.Link href="/login">Login</Nav.Link>
-                    //         <Nav.Link href="/signUp">Register</Nav.Link>
-                    //     </>
-                    // }
-                >
+                    </>
+                }>
                 </Authorized>
             </Nav>
+            <Authorized authorized = {
+                    <>
+                        <span> Hello, {getUserEmail()} </span>
+                        <Button
+                            style={{marginLeft: '1em', marginRight: '1em'}}
+                            onClick={() => {
+                                logout();
+                                update([]);
+                                history('/login');
+                            }}
+                            className="nav-link btn btn-link"
+                        >
+                            Log out
+                        </Button>
+                    </>
+                }>
+                </Authorized>
         </Navbar>
     )
 }

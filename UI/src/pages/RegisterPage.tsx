@@ -1,9 +1,12 @@
 import Register from "../components/Register";
+import { Container } from "react-bootstrap";
 
 
 export function RegisterPage() {
 
     return (
-        <Register />
+        <Container>
+            <Register />
+        </Container>
     )
 }

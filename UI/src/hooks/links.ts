@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { ILink } from "../models"
 import { AxiosError } from "axios"
 import axios from "axios"
+import { ApiEndpoints } from "../util/endpoints"
 
 export function useLinks() {
     const [links, setLinks] = useState<ILink[]>([])
@@ -12,7 +13,7 @@ export function useLinks() {
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get<ILink[]>("http://localhost:7106/api/Link/GetLinks")
+            const response = await axios.get<ILink[]>(`${ApiEndpoints.getLinks}`)
             setLinks(response.data)
             setLoading(false)
         } catch (e: unknown) {
@@ -24,7 +25,7 @@ export function useLinks() {
 
     useEffect( () => {
         fetchLinks()
-    }, [])
+    }, []) //}, [links])
 
     return { links, loading, error }
 }
