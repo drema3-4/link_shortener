@@ -8,9 +8,9 @@ import { RegisterPage } from "./pages/RegisterPage";
 const routes  = [
     {path: '/signUp', element: RegisterPage},
     {path: '/login', element: Login},
-    // {path: '/users', component: IndexUsers, isAdmin: true},
+    {path: '/', element: Login},
     {path: '/createLink', element: CreateLinkPage, auth: true},
-    {path: '/links', element: LinksPage, auth:true}
+    {path: '/links', element: LinksPage, auth: true}
 ];
 
 

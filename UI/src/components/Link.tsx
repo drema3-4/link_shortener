@@ -8,14 +8,10 @@ interface LinkProps {
 
 export function LinkComponent(props: LinkProps) {
 
-    const buttonClickHandler = (name: string) => async (event: any) => {
+    const buttonClickHandler = (id: number) => async (event: any) => {
         try {
-            const response = await axios.get<ILink>('http://localhost:7106/api/Link/GetLink')
-
-            if (response.data.Success && response.data) {
-                await axios.delete('http://localhost:7106/api/Link/DeleteLink', response.data)
-            }
-
+            await axios.delete('http://localhost:7106/api/Link/DeleteLink', {data: {id}})
+            console.log("Ура")
         } catch (e: unknown) {
             const error = e as AxiosError
             console.log(error.message)
@@ -29,7 +25,7 @@ export function LinkComponent(props: LinkProps) {
             <td>
                 <Button
                     variant="danger"
-                    onClick={buttonClickHandler(props.link.name)}
+                    onClick={buttonClickHandler(props.link.id)}
                 >
                     Delete
                 </Button>
