@@ -8,7 +8,7 @@ import AuthenticationContext from '../auth/AuthenticationContext';
 
 import { ApiEndpoints } from '../util/endpoints';
 import DisplayErrors from '../util/DisplayErrors';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 
@@ -83,9 +83,10 @@ export default function LoginComponent() {
 
                     <div className="form-group login-button">
                         <div>
-                        <button type="submit" className="btn btn-primary btn-block" >
-                            <span>Login</span>
-                        </button>
+                            <button type="submit" className="btn btn-primary btn-block" >
+                                <span>Login</span>
+                            </button>
+                            <a href="/signUp"> Registration </a>
                         </div>
                     </div>
 

@@ -85,6 +85,7 @@ export default function LoginComponent() {
                             <button type="submit" className="btn btn-primary btn-block" >
                                 <span>Login</span>
                             </button>
+                            <a href="/login"> Login </a>
                         </div>
                     </div>
 

@@ -6,7 +6,7 @@ export function RedirectComponent() {
     const [searchParams, setSearchParams] = useSearchParams()
     const redirect = useRedirect({name: searchParams.get("name")})
 
-    if (redirect) {
+    if (redirect.originLink) {
         document.location.href = redirect.originLink
         return null
     }
