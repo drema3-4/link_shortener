@@ -39,7 +39,7 @@ namespace Link.Application.Features.LinkTypes.Handlers.Queries
             IEnumerable<Link.Domain.Link> links;
             if (isAdmin)
             {
-                links = await _linkRepository.GetAllLinks();
+                links =  _linkRepository.GetAllLinks().Result.Where(i =>  !i.IsDeleted);
             }
             else
             {

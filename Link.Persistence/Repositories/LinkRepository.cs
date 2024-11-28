@@ -25,7 +25,7 @@ namespace LinkCutter.Persistence.Repositories
 
         public async Task<Link.Domain.Link> GetByName(string name)
         {
-            var link = await _dbContext.Links.FirstOrDefaultAsync(i => i.Name == name);
+            var link = await _dbContext.Links.FirstOrDefaultAsync(i => i.Name == name && !i.IsDeleted);
             return link;
         }
 
