@@ -25,6 +25,13 @@ services:
       - "1401:1433" 
     networks:
       - app-network
+  client:
+    image: client
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+  proxy:
+    image: nginx:mainline
 networks:
   app-network:
     driver: bridge
