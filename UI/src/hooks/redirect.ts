@@ -9,16 +9,18 @@ interface RedirectProps {
 
 export function useRedirect(props: RedirectProps) {
     const [originLink, setOriginLink] = useState('')
-
     const getOriginLink = async (name: any) => {
         try {
+            console.log(props.name)
             const body = name as string
-            const response = await axios.get<ILink>(`${ApiEndpoints.getLink}`, {params: {name: body}})
+            const response = await axios.get<ILink>(ApiEndpoints.getLink, {params: {name : body}})
+
             if (response.status === 200) {
                 setOriginLink(response.data.url)
             }
         } catch (e: unknown) {
             const error = e as AxiosError
+            console.log(error)
         }
     }
 

@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import Login from "./components/Login";
 import { CreateLinkPage } from "./pages/CreateLink";
 import { LinksPage } from "./pages/Links";

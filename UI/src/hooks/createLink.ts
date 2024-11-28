@@ -41,7 +41,7 @@ export function useCreateLink() {
         setError(false)
     }
 
-    const copyShortLink = async (event: any) => {
+    const copyShortLink = async (_: any) => {
         try {
             await navigator.clipboard.writeText(shortLink);
           } catch (err) {

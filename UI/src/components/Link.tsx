@@ -1,8 +1,8 @@
-import { Button, Form, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { ILink } from "../models";
 import axios, { AxiosError } from "axios";
 import { ApiEndpoints } from "../util/endpoints";
-import { Links } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface LinkProps {
     links: ILink[]
@@ -10,11 +10,13 @@ interface LinkProps {
 }
 
 export function LinkComponent(props: LinkProps) {
+    const history = useNavigate()
 
-    const buttonClickHandler = (id: number) => async (event: any) => {
+    const buttonClickHandler = (id: number) => async (_: any) => {
         try {
             await axios.delete(`${ApiEndpoints.deleteLink}`, {data: {id}})
             props.links.splice(props.links.indexOf(props.link), 1)
+            history('/links')
         } catch (e: unknown) {
             const error = e as AxiosError
             console.log(error.message)
@@ -25,7 +27,7 @@ export function LinkComponent(props: LinkProps) {
         <tr>
             <td>{props.link.name}</td>
             <td>{props.link.url}</td>
-            <td class="text-center">
+            <td className="text-center">
                 <Button
                     variant="danger"
                     onClick={buttonClickHandler(props.link.id)}

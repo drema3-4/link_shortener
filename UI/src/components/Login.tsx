@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { authenticationResponse, userCredentials } from '../auth/auth.models';
-import AuthForm from '../auth/AuthForm';
 import { useContext, useState } from 'react';
-import { AccordionCollapse, Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import { getClaims, saveToken } from '../auth/handleJWT';
 import AuthenticationContext from '../auth/AuthenticationContext';
 
 import { ApiEndpoints } from '../util/endpoints';
 import DisplayErrors from '../util/DisplayErrors';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 
